@@ -1,0 +1,153 @@
+TECHNICAL MVP ROADMAP: SCREEN RECORDING → AI AUTOMATION (SOFTWARE-ONLY)
+===================================================================
+
+Goal:
+-----
+Develop a privacy-first desktop application that continuously records the screen, captures user input, processes frames with OCR, and stores searchable structured data locally for AI-based task automation. No cloud or hardware dependencies.
+
+===================================================================
+1. DEVELOPMENT OVERVIEW
+===================================================================
+Total Duration: ~12–15 weeks
+Primary Language: Rust + Python + TypeScript (Electron)
+Target OS: Windows (Phase 1), macOS (later)
+
+Core Modules:
+--------------
+1. Capture Layer (Rust): Screen + Input capture, low CPU
+2. Processing Layer (Python): OCR, event correlation, data indexing
+3. Query Layer (FastAPI + SQLite): Search + retrieval interface
+4. UI Layer (Electron): Start/Stop, search bar, result timeline
+
+===================================================================
+2. PHASE-BY-PHASE TECHNICAL ROADMAP
+===================================================================
+
+PHASE 1 – FOUNDATION & CAPTURE LAYER (Weeks 1–3)
+------------------------------------------------
+Goal: Establish the base screen recording and event logging system.
+
+Milestones:
+- [ ] Initialize project structure: /core (Rust), /api (Python), /ui (Electron)
+- [ ] Fork or integrate Screenpipe core capture module
+- [ ] Implement continuous frame capture (every 1–5s interval)
+- [ ] Integrate keyboard/mouse event logging (Rust device_query or pynput)
+- [ ] Store output in /data/raw/ as JSON + image files
+- [ ] Add system tray control (start, pause, stop)
+
+Deliverables:
+- CLI tool to capture frames + events
+- Data sample: session_001.json with frame metadata
+- Basic CPU/IO profiling (target <10% CPU)
+
+-------------------------------------------------------------------
+
+PHASE 2 – DATA PROCESSING PIPELINE (Weeks 4–6)
+-----------------------------------------------
+Goal: Build OCR + indexing pipeline to convert raw captures into structured data.
+
+Milestones:
+- [ ] Implement background processing service (Python FastAPI)
+- [ ] Integrate OCR (Tesseract or PaddleOCR) for text extraction
+- [ ] Create relational DB schema in SQLite/DuckDB:
+      • screen_frames(timestamp, app, path, ocr_text)
+      • user_events(timestamp, type, coords, key_code, frame_ref)
+      • text_tokens(token, frame_id, coords)
+- [ ] Develop ingestion script to link events with nearest screen frame
+- [ ] Add API endpoints:
+      • /ingest (POST)
+      • /frames (GET)
+      • /query?q=<text>
+
+Deliverables:
+- Working OCR pipeline with accurate timestamps
+- Local DB with full-text search enabled (FTS5 or DuckDB vector index)
+- Unit tests for OCR + DB ingestion
+
+-------------------------------------------------------------------
+
+PHASE 3 – SEARCH & UI LAYER (Weeks 7–9)
+----------------------------------------
+Goal: Deliver user interface and interactive search functionality.
+
+Milestones:
+- [ ] Set up Electron + React frontend
+- [ ] Connect FastAPI endpoints with local WebSocket
+- [ ] Build UI components:
+      • Search bar
+      • Results table (text + timestamp)
+      • Video/snippet viewer
+- [ ] Add tray menu (pause, storage path, status indicator)
+- [ ] Implement query optimizations (DuckDB analytical queries)
+- [ ] Ensure sub-500ms response for typical queries
+
+Deliverables:
+- Electron desktop app
+- Live search over captured sessions
+- Playback of relevant snippets
+
+-------------------------------------------------------------------
+
+PHASE 4 – AI-READY EXPORT & STABILIZATION (Weeks 10–12)
+--------------------------------------------------------
+Goal: Generate structured data for automation and polish technical reliability.
+
+Milestones:
+- [ ] Implement export endpoint: /export/task/<session_id>
+- [ ] Define JSON schema for AI agents:
+      {
+        "task": "upload report",
+        "steps": [ { "action": "click", "text": "Submit" } ]
+      }
+- [ ] Integrate simple natural-language summarization (optional)
+- [ ] Optimize storage compression (ffmpeg or zstd)
+- [ ] Add system settings (record interval, retention policy)
+- [ ] Conduct performance + privacy tests
+- [ ] Code freeze → Beta packaging
+
+Deliverables:
+- AI-ready JSON output
+- Stable, low-overhead recording
+- Beta build for closed testing
+
+===================================================================
+3. TECHNICAL GUIDELINES & BEST PRACTICES
+===================================================================
+- Separate capture and processing to avoid UI blocking.
+- Use Rust channels for async data streaming to Python layer.
+- Store all files locally with clear directory hierarchy: /data/raw/, /data/processed/
+- Respect app-level exclusions (no capture for browsers/private windows).
+- Implement hotkey to pause/resume recording.
+- Modularize OCR pipeline to replace engine easily.
+
+===================================================================
+4. PERFORMANCE TARGETS
+===================================================================
+CPU Usage: < 10% average idle
+RAM Footprint: < 500MB during recording
+Disk Growth: ~10GB/day (configurable)
+Query Latency: < 500ms for 1M tokens
+OCR Accuracy: > 90% for on-screen text
+
+===================================================================
+5. TESTING CHECKLIST
+===================================================================
+- [ ] Unit Tests for OCR extraction accuracy
+- [ ] End-to-End Test for capture → DB → query loop
+- [ ] Performance Benchmark scripts
+- [ ] Data privacy audit (ensure exclusions work)
+- [ ] Error recovery (resume after crash)
+- [ ] Beta QA with synthetic workload
+
+===================================================================
+6. FINAL DELIVERABLES
+===================================================================
+- Executable desktop app (Electron + Tauri)
+- FastAPI backend service
+- SQLite/DuckDB local database
+- JSON export API for AI workflows
+- Technical documentation + setup script
+
+===================================================================
+END OF FILE
+===================================================================
