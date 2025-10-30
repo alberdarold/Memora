@@ -1,0 +1,17 @@
+{
+  "name": "action-capture",
+  "version": "1.0.0",
+  "description": "Captures keyboard and mouse events for workflow recording",
+  "main": "pipe.js",
+  "scripts": {
+    "build": "bun build pipe.ts --outdir dist --target bun",
+    "dev": "bun run pipe.ts"
+  },
+  "dependencies": {
+    "@screenpipe/js": "latest"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  }
+}
+

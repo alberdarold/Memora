@@ -1,0 +1,17 @@
+{
+  "name": "task-detector",
+  "version": "1.0.0",
+  "description": "Detects task boundaries and analyzes workflow patterns",
+  "main": "pipe.js",
+  "scripts": {
+    "build": "bun build pipe.ts --outdir dist --target bun",
+    "dev": "bun run pipe.ts"
+  },
+  "dependencies": {
+    "@screenpipe/js": "latest"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  }
+}
+

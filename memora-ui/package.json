@@ -1,0 +1,26 @@
+{
+  "name": "memora-ui",
+  "version": "0.1.0",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "electron": "electron .",
+    "start": "vite & electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["screen-recording", "ai", "automation"],
+  "author": "Memora Team",
+  "license": "MIT",
+  "description": "AI-ready screen recording with privacy-first local storage",
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.1.0",
+    "electron": "^38.4.0",
+    "electron-builder": "^26.0.12",
+    "vite": "^7.1.12"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  }
+}
