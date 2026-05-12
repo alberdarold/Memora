@@ -20,7 +20,17 @@ python random_vibration_plot.py --csv example_spectra.csv -o plot.png
 # Best-effort: from an image of the table (uses Tesseract OCR)
 python random_vibration_plot.py --image table.png -o plot.png \
     --title "Random Vibration Spectra"
+
+# European decimals, semicolon-delimited, custom axes
+python random_vibration_plot.py --csv eu.csv -o plot.png \
+    --decimal comma --delimiter ';' \
+    --xlim 10 2000 --ylim 1e-4 1e2 \
+    --xlabel "Frequency [Hz]" --ylabel "ASD [g²/Hz]"
 ```
+
+All flags: `--csv|--image`, `-o/--output`, `--title`, `--xlabel`, `--ylabel`,
+`--xlim`, `--ylim`, `--decimal {auto,dot,comma}`, `--delimiter`,
+`--legend-loc`, `--show`.
 
 ## CSV format
 
